@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Participante } from '../models/participante';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl,FormBuilder, Validators } from '@angular/forms';
 import { ParticipanteService } from '../services/participante.service';
 
 @Component({
@@ -21,10 +21,10 @@ export class RegistroComponent implements OnInit {
     this.participanteService = participanteService;
   } */
 
-  constructor(private readonly participanteService: ParticipanteService) {}
+  constructor(private fb: FormBuilder,private readonly participanteService: ParticipanteService) {}
 
   ngOnInit() {
-    this.grupo = new FormGroup({
+   /* this.grupo = new FormGroup({
       nombre: new FormControl(null, Validators.required),
       correo: new FormControl(null, [
         Validators.required,
@@ -33,6 +33,16 @@ export class RegistroComponent implements OnInit {
         ),
       ]),
       contrasena: new FormControl(null, Validators.required),
+    });*/
+    this.grupo = this.fb.group({
+      nombre: [null, Validators.required],
+      correo: [null, [
+        Validators.required,
+        Validators.pattern(
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ),
+      ]],
+      contrasena: [null, Validators.required],
     });
   }
 
